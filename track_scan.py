@@ -33,6 +33,9 @@ invalid_eid_map = {
 
 }
 
+eid_file = open('eid.txt', mode='w')
+pid_file = open('pid.txt', mode='w')
+
 
 
 def find_all_file_with_suffix(dir, suffix, fl):
@@ -117,8 +120,10 @@ def find_all_java_track_method(f):
                                     invalid_eid_map[pid] = 1
                                 # print('此处eid不能直接使用，请手动处理')
 
-                            # print('pid->' + pid)
-                            # print('eid->' + eid)
+                            print('pid->' + pid)
+                            print('eid->' + eid)
+                            eid_file.write(eid+'\n')
+                            pid_file.write(pid+'\n')
                         break
                         # print('line->' + format(line))
                         # temp = line.split('.')
@@ -155,15 +160,15 @@ def find_all_kt_track_method(f):
             if line_feed:
                 line_feed = False
                 compose_str += line
-                print('换行字符串->' + compose_str)
+                # print('换行字符串->' + compose_str)
             else:
                 compose_str = line
 
-            if line.__contains__(tracking_class_name):
-                dealLine = line
-                index = line.find(tracking_class_name)
+            if compose_str.__contains__(tracking_class_name):
+                dealLine = compose_str
+                index = compose_str.find(tracking_class_name)
                 if index != -1:
-                    dealLine = line[index:]
+                    dealLine = compose_str[index:]
                 line = dealLine
 
 
@@ -190,7 +195,7 @@ def find_all_kt_track_method(f):
 
                             # 算出pid
                             pidTemp = subStr[index+1:]
-                            pidParams = pidTemp.split('"')
+                            pidParams = pidTemp.strip().split('"')
                             if len(pidParams) > 1:
                                 # 这种才是正常情况，用双引号包裹的
                                 pid = pidParams[1]
@@ -232,6 +237,8 @@ def find_all_kt_track_method(f):
 
                             print('pid->' + pid)
                             print('eid->' + eid)
+                            eid_file.write(eid + '\n')
+                            pid_file.write(pid + '\n')
                         break
 
 
@@ -242,13 +249,13 @@ if __name__ == '__main__':
     java_file_list = []
 
 
-    # for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
-    #     # print("java->" + f_java)
-    #     find_all_java_track_method(f_java)
-    # #
-    # for f_kt in find_all_file_with_suffix(project_path, ".kt", kt_file_list):
-    #     # print("kt->" + f_kt)
-    #     find_all_kt_track_method(f_kt)
+    for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
+        # print("java->" + f_java)
+        find_all_java_track_method(f_java)
+    #
+    for f_kt in find_all_file_with_suffix(project_path, ".kt", kt_file_list):
+        # print("kt->" + f_kt)
+        find_all_kt_track_method(f_kt)
 
     valid_pid_key_count = 0
     valid_pid_count = 0
@@ -273,8 +280,8 @@ if __name__ == '__main__':
     pid_key_count = valid_pid_key_count + invalid_pid_key_count
     pid_count = valid_pid_count + invalid_pid_count
 
-    # print('pid_key_count->' + format(pid_key_count))
-    # print('pid_count->' + format(pid_count))
+    print('pid_key_count->' + format(pid_key_count))
+    print('pid_count->' + format(pid_count))
 
     valid_eid_key_count = 0
     valid_eid_count = 0
@@ -299,9 +306,17 @@ if __name__ == '__main__':
     eid_key_count = valid_eid_key_count + invalid_eid_key_count
     eid_count = valid_eid_count + invalid_eid_count
 
-    # print('eid_key_count->' + format(eid_key_count))
-    # print('eid_count->' + format(eid_count))
+    print('eid_key_count->' + format(eid_key_count))
+    print('eid_count->' + format(eid_count))
+    key_count = eid_key_count + pid_key_count
+    id_count = eid_count + pid_count
     # print('valid_eid_map->' + format(valid_eid_map))
+    print('key_count->' + format(key_count))
+    print('id_count->' + format(id_count))
+
+
+
+
 
     # find_all_java_track_method(
     #     "/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/dating/ui/VideoChatActivity.java")
@@ -310,7 +325,7 @@ if __name__ == '__main__':
     # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/group/binder/FeedGroupViewBinder.kt")
     # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/group/binder/NotifyLikeViewBinder.kt")
     # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/likecard/favoriteguide/FavoriteGuideAct.kt")
-    find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/like/ui/LikeItemBinder.kt")
+    # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/like/ui/LikeItemBinder.kt")
     # find_all_java_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/main/recommends/recommend/view/swipe/NewSwipeCardGroup.java")
     # find_all_java_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/dating/ui/VideoChatActivity.java")
 
