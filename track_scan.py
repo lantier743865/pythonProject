@@ -51,6 +51,7 @@ def find_all_file_with_suffix(dir, suffix, fl):
     return fl
 
 
+# 此方法已废弃，只维护 find_all_kt_track_method
 def find_all_java_track_method(f):
     file = open(f, "r")
     lines = file.readlines()
@@ -149,7 +150,7 @@ def find_all_kt_track_method(f):
     lines = file.readlines()
     is_need_go_ahead = False
     for line in lines:
-        if line.strip().endswith(tracking_class_name_with_package_kt):
+        if line.strip().endswith(tracking_class_name_with_package_kt) or line.strip().endswith(tracking_class_name_with_package_java):
             is_need_go_ahead = True
             break
     if is_need_go_ahead:
@@ -178,7 +179,8 @@ def find_all_kt_track_method(f):
                         temp = line.strip().split(',')
                         if len(temp) < 2:
                             line_feed = True
-                            print('此处换行了，请手动处理->' + format(line_feed))
+                            print(''
+                                  '->' + format(line_feed))
                             continue
                         else:
                             # 去除代码行前后空格
@@ -249,13 +251,13 @@ if __name__ == '__main__':
     java_file_list = []
 
 
-    for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
-        # print("java->" + f_java)
-        find_all_java_track_method(f_java)
-    #
-    for f_kt in find_all_file_with_suffix(project_path, ".kt", kt_file_list):
-        # print("kt->" + f_kt)
-        find_all_kt_track_method(f_kt)
+    # for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
+    #     # print("java->" + f_java)
+    #     find_all_java_track_method(f_java)
+    # #
+    # for f_kt in find_all_file_with_suffix(project_path, ".kt", kt_file_list):
+    #     # print("kt->" + f_kt)
+    #     find_all_kt_track_method(f_kt)
 
     valid_pid_key_count = 0
     valid_pid_count = 0
@@ -327,6 +329,6 @@ if __name__ == '__main__':
     # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/likecard/favoriteguide/FavoriteGuideAct.kt")
     # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/like/ui/LikeItemBinder.kt")
     # find_all_java_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/main/recommends/recommend/view/swipe/NewSwipeCardGroup.java")
-    # find_all_java_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/dating/ui/VideoChatActivity.java")
+    find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/dating/ui/VideoChatActivity.java")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
