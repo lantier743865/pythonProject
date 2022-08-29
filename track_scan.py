@@ -1,7 +1,8 @@
 # This is a sample Python script.
 import os
 
-project_path = "/Users/wuxiaolong/project/qianshou-android"
+project_android_path = "/Users/wuxiaolong/project/qianshou-android"
+project_ios_path = "/Users/wuxiaolong/project/qianshou-ios"
 tracking_class_name_with_package_java = "com.tantan.x.track.Tracking;"
 tracking_class_name_with_package_kt = "com.tantan.x.track.Tracking"
 tracking_class_name = "Tracking"
@@ -64,6 +65,7 @@ def find_all_id_method(f):
     file = open(f, "r")
     lines = file.readlines()
     for line in lines:
+        # print('line->' + format(line))
         if line.__contains__(pid_rule):
             index = line.find(pid_rule)
             temp = line[index:]
@@ -76,7 +78,7 @@ def find_all_id_method(f):
             # # print('index->'+format(index))
             # # print('temp->'+format(temp))
             # # print('params->'+format(params))
-            # print(pid)
+            print(pid)
         if line.__contains__(eid_rule):
             index = line.find(eid_rule)
             temp = line[index:]
@@ -85,7 +87,7 @@ def find_all_id_method(f):
             # print('index->'+format(index))
             # print('temp->'+format(temp))
             # print('params->'+format(params))
-            # print(eid)
+            print(eid)
             if eid in valid_eid_map:
                 valid_eid_map[eid] += 1
             else:
@@ -346,10 +348,13 @@ if __name__ == '__main__':
     java_file_list = []
 
 
-    for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
-        # print("java->" + f_java)
-        find_all_id_method(f_java)
-    for f_kt in find_all_file_with_suffix(project_path, ".kt", java_file_list):
+    # for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
+    #     # print("java->" + f_java)
+    #     find_all_id_method(f_java)
+    # for f_kt in find_all_file_with_suffix(project_path, ".kt", java_file_list):
+    #     # print("f_kt->" + f_kt)
+    #     find_all_id_method(f_kt)
+    for f_kt in find_all_file_with_suffix(project_ios_path, ".swift", java_file_list):
         # print("f_kt->" + f_kt)
         find_all_id_method(f_kt)
     # #
@@ -437,7 +442,10 @@ if __name__ == '__main__':
     # find_all_kt_track_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/dating/ui/VideoChatActivity.java")
     # find_pageid_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/dating/ui/VideoChatActivity.java")
     # find_pageid_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/vip/MVipBuyAct.kt")
-    # find_pageid_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/vip/MVipBuyAct.kt")
+    # find_all_id_method("/Users/wuxiaolong/project/qianshou-ios/tantan-x/Source/Payment/Managers/IAPManager.swift")
+    # find_all_id_method("Users/wuxiaolong/project/qianshou-ios/tantan-x/Source/ChatV2/Flower[收花列表]/Controllers/ConversationFlowersViewController.swift")
+    # find_all_id_method("/Users/wuxiaolong/project/qianshou-ios/tantan-x/Source/ChatV2/Flower\[收花列表\]/Controllers/ConversationFlowersViewController.swift")
+
 
     # print('valid_pid_map->' + format(valid_pid_map))
 
