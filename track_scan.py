@@ -67,31 +67,45 @@ def find_all_id_method(f):
     for line in lines:
         # print('line->' + format(line))
         if line.__contains__(pid_rule):
-            index = line.find(pid_rule)
-            temp = line[index:]
-            params = temp.split('"')
-            pid = params[1]
-            if pid in invalid_pid_map:
-                valid_pid_map[pid] += 1
-            else:
-                valid_pid_map[pid] = 1
-            # # print('index->'+format(index))
-            # # print('temp->'+format(temp))
-            # # print('params->'+format(params))
-            print(pid)
+            count = line.count(pid_rule)
+            if count > 0:
+                index = line.find(pid_rule)
+                temp = line[index:]
+                params = temp.split('"')
+                if count == 1:
+                    pid = params[1]
+                    if pid in invalid_pid_map:
+                        valid_pid_map[pid] += 1
+                    else:
+                        valid_pid_map[pid] = 1
+                else:
+                    for pid in params:
+                        if pid.__contains__('p_'):
+                            if pid in invalid_pid_map:
+                                valid_pid_map[pid] += 1
+                            else:
+                                valid_pid_map[pid] = 1
+
         if line.__contains__(eid_rule):
-            index = line.find(eid_rule)
-            temp = line[index:]
-            params = temp.split('"')
-            eid = params[1]
-            # print('index->'+format(index))
-            # print('temp->'+format(temp))
-            # print('params->'+format(params))
-            print(eid)
-            if eid in valid_eid_map:
-                valid_eid_map[eid] += 1
-            else:
-                valid_eid_map[eid] = 1
+            count = line.count(eid_rule)
+            if count > 0:
+                index = line.find(eid_rule)
+                temp = line[index:]
+                params = temp.split('"')
+                if count == 1:
+                    eid = params[1]
+                    if eid in valid_eid_map:
+                        valid_eid_map[eid] += 1
+                    else:
+                        valid_eid_map[eid] = 1
+                else:
+                    for eid in params:
+                        if eid.__contains__('e_'):
+                            if eid in valid_eid_map:
+                                valid_eid_map[eid] += 1
+                            else:
+                                valid_eid_map[eid] = 1
+
 
 # 此方法已废弃，只维护 find_all_kt_track_method
 def find_all_java_track_method(f):
@@ -348,20 +362,20 @@ if __name__ == '__main__':
     java_file_list = []
 
 
-    # for f_java in find_all_file_with_suffix(project_path, ".java", java_file_list):
-    #     # print("java->" + f_java)
-    #     find_all_id_method(f_java)
-    # for f_kt in find_all_file_with_suffix(project_path, ".kt", java_file_list):
-    #     # print("f_kt->" + f_kt)
-    #     find_all_id_method(f_kt)
-    for f_kt in find_all_file_with_suffix(project_ios_path, ".swift", java_file_list):
+    for f_java in find_all_file_with_suffix(project_android_path, ".java", java_file_list):
+        # print("java->" + f_java)
+        find_all_id_method(f_java)
+    for f_kt in find_all_file_with_suffix(project_android_path, ".kt", java_file_list):
         # print("f_kt->" + f_kt)
         find_all_id_method(f_kt)
+    # for f_kt in find_all_file_with_suffix(project_ios_path, ".swift", java_file_list):
+    #     # print("f_kt->" + f_kt)
+    #     find_all_id_method(f_kt)
     # #
-    # for f_kt in find_all_file_with_suffix(project_path, ".kt", kt_file_list):
+    # for f_kt in find_all_file_with_suffix(project_android_path, ".kt", kt_file_list):
     #     # print("kt->" + f_kt)
     #     find_all_kt_track_method(f_kt)
-    # for f_kt in find_all_file_with_suffix(project_path, ".java", java_file_list):
+    # for f_kt in find_all_file_with_suffix(project_android_path, ".java", java_file_list):
     #     # print("kt->" + f_kt)
     #     find_all_kt_track_method(f_kt)
 
@@ -445,6 +459,7 @@ if __name__ == '__main__':
     # find_all_id_method("/Users/wuxiaolong/project/qianshou-ios/tantan-x/Source/Payment/Managers/IAPManager.swift")
     # find_all_id_method("Users/wuxiaolong/project/qianshou-ios/tantan-x/Source/ChatV2/Flower[收花列表]/Controllers/ConversationFlowersViewController.swift")
     # find_all_id_method("/Users/wuxiaolong/project/qianshou-ios/tantan-x/Source/ChatV2/Flower\[收花列表\]/Controllers/ConversationFlowersViewController.swift")
+    # find_all_id_method("/Users/wuxiaolong/project/qianshou-android/app/src/main/java/com/tantan/x/register/address/SelectAddressDialog.kt")
 
 
     # print('valid_pid_map->' + format(valid_pid_map))
