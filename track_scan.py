@@ -2,7 +2,7 @@
 import os
 
 project_android_path = "/Users/wuxiaolong/project/qianshou-android"
-project_ios_path = "/Users/wuxiaolong/project/qianshou-ios"
+project_ios_path = "/Users/wuxiaolong/project/qianshou-ios/tantan-x"
 tracking_class_name_with_package_java = "com.tantan.x.track.Tracking;"
 tracking_class_name_with_package_kt = "com.tantan.x.track.Tracking"
 tracking_class_name = "Tracking"
@@ -44,6 +44,9 @@ invalid_eid_map = {
 
 eid_file = open('eid.txt', mode='w')
 pid_file = open('pid.txt', mode='w')
+track_file = open('exist_track.txt', mode='r')
+track = set()
+only_scan = False
 
 
 
@@ -64,6 +67,8 @@ eid_rule = '"e_'
 def find_all_id_method(f):
     file = open(f, "r")
     lines = file.readlines()
+    is_need_write = False
+    newLines = []
     for line in lines:
         # print('line->' + format(line))
         if line.__contains__(pid_rule):
@@ -74,6 +79,11 @@ def find_all_id_method(f):
                 params = temp.split('"')
                 if count == 1:
                     pid = params[1]
+                    if track.__contains__(pid):
+                        print("包含这个点，可以保留"+pid)
+                    else:
+                        line = ''
+                        is_need_write = True
                     if pid in invalid_pid_map:
                         valid_pid_map[pid] += 1
                     else:
@@ -81,6 +91,11 @@ def find_all_id_method(f):
                 else:
                     for pid in params:
                         if pid.__contains__('p_'):
+                            if track.__contains__(pid):
+                                print("包含这个点，可以保留"+pid)
+                            else:
+                                line = ''
+                                is_need_write = True
                             if pid in invalid_pid_map:
                                 valid_pid_map[pid] += 1
                             else:
@@ -94,6 +109,11 @@ def find_all_id_method(f):
                 params = temp.split('"')
                 if count == 1:
                     eid = params[1]
+                    if track.__contains__(eid):
+                        print("包含这个点，可以保留" + eid)
+                    else:
+                        line = ''
+                        is_need_write = True
                     if eid in valid_eid_map:
                         valid_eid_map[eid] += 1
                     else:
@@ -101,10 +121,28 @@ def find_all_id_method(f):
                 else:
                     for eid in params:
                         if eid.__contains__('e_'):
+                            if track.__contains__(eid):
+                                print("包含这个点，可以保留" + eid)
+                            else:
+                                line = ''
+                                is_need_write = True
                             if eid in valid_eid_map:
                                 valid_eid_map[eid] += 1
                             else:
                                 valid_eid_map[eid] = 1
+        newLines.append(line)
+    file.close()
+    if only_scan:
+        return
+    if is_need_write:
+        file = open(f, "w+")
+        for line in newLines:
+            file.write(line)
+        file.close()
+
+
+
+
 
 
 # 此方法已废弃，只维护 find_all_kt_track_method
@@ -362,15 +400,17 @@ if __name__ == '__main__':
     java_file_list = []
 
 
+
+    lines = track_file.readlines()
+    for line in lines:
+        track.add(line.strip())
+
     for f_java in find_all_file_with_suffix(project_android_path, ".java", java_file_list):
         # print("java->" + f_java)
         find_all_id_method(f_java)
     for f_kt in find_all_file_with_suffix(project_android_path, ".kt", java_file_list):
         # print("f_kt->" + f_kt)
         find_all_id_method(f_kt)
-    # for f_kt in find_all_file_with_suffix(project_ios_path, ".swift", java_file_list):
-    #     # print("f_kt->" + f_kt)
-    #     find_all_id_method(f_kt)
     # #
     # for f_kt in find_all_file_with_suffix(project_android_path, ".kt", kt_file_list):
     #     # print("kt->" + f_kt)
