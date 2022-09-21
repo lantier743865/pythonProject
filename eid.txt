@@ -1,0 +1,2 @@
+e_pay_loop_order_result_success_but_callback_failed
+e_pay_loop_order_result_failed_of_net_error
