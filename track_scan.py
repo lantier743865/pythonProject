@@ -141,7 +141,37 @@ def find_all_id_method(f):
         file.close()
 
 
-
+def find_all_request_api(f):
+    file = open(f, "r")
+    lines = file.readlines()
+    is_need_print_file = False
+    for line in lines:
+        if line.__contains__("@GET"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@PATCH"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@POST"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@PUT"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@DELETE"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@OPTIONS"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@TRACE"):
+            is_need_print_file = True
+            print(line)
+        if line.__contains__("@CONNECT"):
+            is_need_print_file = True
+            print(line)
+    if is_need_print_file:
+        print(format("----模块:"+f))
 
 
 
